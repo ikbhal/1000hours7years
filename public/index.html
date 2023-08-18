@@ -100,7 +100,7 @@
         }
 
         function saveDataToServer(id, checked, notes) {
-            let selectedTopic = $(this).val();
+            let selectedTopic = $('#topicSelect').val();
             // Simulated function to send data to server
             const dataToSend = JSON.stringify({
                 checked: checked,

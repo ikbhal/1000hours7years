@@ -1,0 +1,6 @@
+multiple topics
+1) allow create new topic  -> store data folder, topic.json , check duplicate file, throw error if duplicate
+2) allow delete of topic -> delete file name at data fodler if exist, else throw error
+3) get hours by topic  -> given topic name, check if file exist ata data folder, return $topic.json 
+4)generate default values for topic -> generate all checked : fasle, notes: "" for all 1000 hours at $topic.json 
+5) list of topics at data folder -> in json format only list of files (topics ), which will be used to select topic at index.html 

@@ -14,6 +14,16 @@
     <div class="container">
         <h1 class="mt-4">1000 Hours 7 Years</h1>
 
+         <!-- Select existing or create a new topic -->
+         <div class="mb-3">
+            <label for="topicSelect" class="form-label">Select or Create Topic:</label>
+            <select id="topicSelect" class="form-select">
+                <!-- Options will be populated dynamically -->
+            </select>
+            <button id="createTopicBtn" class="btn btn-primary">Create New Topic</button>
+            <button id="deleteTopicBtn" class="btn btn-danger">Delete Topic</button>
+        </div>
+
         <div id="content">
             <!-- Rows will be dynamically added here -->
         </div>
@@ -111,7 +121,98 @@
             });
         }
 
+        function populationTopicDropDown() {
+            const topicSelect = $('#topicSelect');
+            $.ajax({
+                url: '/v2/topics/list',
+                method: 'GET',
+                success: function (topics) {
+                    topics.forEach(topic => {
+                        topicSelect.append($('<option>', {
+                            value: topic,
+                            text: topic
+                        }));
+                    });
+                    
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+
+        function addTopicSelectChangeHandler(){
+            // Load topic hours
+            $('#topicSelect').change(function () {
+                const selectedTopic = $(this).val();
+                $.ajax({
+                    url: '/v2/topics/hours/' + selectedTopic,
+                    method: 'GET',
+                    success: function (topicHours) {
+                        populateRows(topicHours);
+                        autoSave();
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    }
+                });
+            });
+        }
+
+        function createNewTopicBtnHandler(){
+            $('#createTopicBtn').click(function () {
+            const newTopicName = prompt('Enter a name for the new topic:');
+                if (newTopicName) {
+                    $.ajax({
+                        url: '/v2/topics/create',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            topicName: newTopicName
+                        }),
+                        success: function (response) {
+                            console.log(response);
+                            // Refresh the topic list
+                            location.reload();
+                        },
+                        error: function (error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            });
+        }
+
+        function deleteTopicHanlder() {
+            $('#deleteTopicBtn').click(function () {
+            const selectedTopic = $('#topicSelect').val();
+                if (selectedTopic) {
+                    if (confirm(`Are you sure you want to delete the topic "${selectedTopic}"?`)) {
+                        $.ajax({
+                            url: '/v2/topics/delete/' + selectedTopic,
+                            method: 'DELETE',
+                            success: function (response) {
+                                console.log(response);
+                                // Refresh the topic list
+                                location.reload();
+                            },
+                            error: function (error) {
+                                console.error(error);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
         $(document).ready(function () {
+            // topic handler topicSelect change , create, delete topic handler
+            addTopicSelectChangeHandler();
+            createNewTopicBtnHandler();
+            deleteTopicHanlder();
+
+            populationTopicDropDown();
+
             populateRows(defaultRowsData);
             autoSave();
             $.ajax({

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const dataFilePath = path.join(__dirname, 'data.json');
+const dataFilePath = path.join(__dirname, 'data', 'data.json');
 
 // Generate defaultRowsData dynamically using a for loop
 const defaultRowsData = [];

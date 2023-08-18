@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+const topicsRouter = require('./routes/topics');
 
 const app = express();
 const PORT = process.env.PORT || 3041; // Use port 3041
@@ -11,7 +12,10 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const dataFilePath = path.join(__dirname, 'data.json');
+app.use('/v2/topics', topicsRouter );
+
+// const dataFilePath = path.join(__dirname, 'data.json');
+const dataFilePath = path.join(__dirname,  'data', 'data.json');
 
 // Update data for a specific row using PUT request
 app.put('/api/data/:id', (req, res) => {

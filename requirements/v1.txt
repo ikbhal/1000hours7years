@@ -1,0 +1,9 @@
+1000 rows
+  start with 100 rows for now for easy to watch.
+each row have 
+ each row represent
+ 2 pomodoro 25 minutes, 5 minutes 2 break 
+checkbox, notes 
+---
+save to json file 
+position index 

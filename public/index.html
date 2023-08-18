@@ -206,7 +206,8 @@
         }
 
         function getSelectedTopicHours(){
-            let selectedTopic = $(this).val();
+            // let selectedTopic = $(this).val();
+            let selectedTopic = $('#topicSelect').val();
             //  if selectetdTopic is not null or undefined
             if(selectedTopic == undefined || selectedTopic == null ||  selectedTopic == ''){
                 selectedTopic = 'data';

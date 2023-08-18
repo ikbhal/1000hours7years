@@ -99,18 +99,17 @@
             });
         }
 
-        // Simulated function to save data to the server
-        // Function to save data to the server
         function saveDataToServer(id, checked, notes) {
+            let selectedTopic = $(this).val();
             // Simulated function to send data to server
             const dataToSend = JSON.stringify({
                 checked: checked,
                 notes: notes
             });
             $.ajax({
-                url: '/api/data/' + id,
+                url: `/v2/topics/data/${selectedTopic}/${id}`, // Include the selected topic
                 method: 'PUT',
-                contentType: 'application/json', // Specify JSON content type
+                contentType: 'application/json',
                 data: dataToSend,
                 success: function (response) {
                     console.log(response);
@@ -120,6 +119,7 @@
                 }
             });
         }
+
 
         function populationTopicDropDown() {
             const topicSelect = $('#topicSelect');
@@ -205,18 +205,15 @@
             });
         }
 
-        $(document).ready(function () {
-            // topic handler topicSelect change , create, delete topic handler
-            addTopicSelectChangeHandler();
-            createNewTopicBtnHandler();
-            deleteTopicHanlder();
-
-            populationTopicDropDown();
-
-            populateRows(defaultRowsData);
-            autoSave();
+        function getSelectedTopicHours(){
+            let selectedTopic = $(this).val();
+            //  if selectetdTopic is not null or undefined
+            if(selectedTopic == undefined || selectedTopic == null ||  selectedTopic == ''){
+                selectedTopic = 'data';
+            }
+            ///hours/:topicName
             $.ajax({
-                url: '/api/data',
+                url: '/v2/topics/hours/' + selectedTopic,
                 method: 'GET',
                 success: function (serverData) {
                     // If server data is empty, use default data
@@ -231,6 +228,20 @@
                     console.error(error);
                 }
             });
+        }
+
+
+        $(document).ready(function () {
+            // topic handler topicSelect change , create, delete topic handler
+            addTopicSelectChangeHandler();
+            createNewTopicBtnHandler();
+            deleteTopicHanlder();
+
+            populationTopicDropDown();
+
+            populateRows(defaultRowsData);
+            autoSave();
+            getSelectedTopicHours();
         });
 
 

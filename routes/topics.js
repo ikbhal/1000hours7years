@@ -67,4 +67,29 @@ router.get('/list', (req, res) => {
     });
 });
 
+
+router.put('/data/:topicName/:id', (req, res) => {
+    const topicName = req.params.topicName;
+    const id = req.params.id;
+    const topicFilePath = path.join(dataFolderPath, `${topicName}.json`);
+
+    if (fs.existsSync(topicFilePath)) {
+        const rawData = fs.readFileSync(topicFilePath);
+        const data = JSON.parse(rawData);
+
+        const index = data.findIndex(row => row.id === parseInt(id));
+        if (index !== -1) {
+            data[index].checked = req.body.checked;
+            data[index].notes = req.body.notes;
+
+            fs.writeFileSync(topicFilePath, JSON.stringify(data, null, 2));
+            res.json({ message: 'Data saved successfully' });
+        } else {
+            res.status(404).json({ error: 'Row not found' });
+        }
+    } else {
+        res.status(404).json({ error: 'Topic not found' });
+    }
+});
+
 module.exports = router;

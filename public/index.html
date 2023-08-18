@@ -32,13 +32,32 @@
         }
 
         // Function to generate a row element
+    //     function generateRow(rowData) {
+    //         return `
+    //     <div class="row">
+    //       <input type="checkbox" class="checkbox" data-id="${rowData.id}" ${rowData.checked ? 'checked' : ''}>
+    //       <textarea class="notes" data-id="${rowData.id}">${rowData.notes}</textarea>
+    //     </div>
+    //   `;
+    //     }
+
+        
         function generateRow(rowData) {
             return `
-        <div class="row">
-          <input type="checkbox" class="checkbox" data-id="${rowData.id}" ${rowData.checked ? 'checked' : ''}>
-          <textarea class="notes" data-id="${rowData.id}">${rowData.notes}</textarea>
-        </div>
-      `;
+                <div class="row-container border border-success rounded p-2 mb-2">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input checkbox" data-id="${rowData.id}" ${rowData.checked ? 'checked' : ''}>
+                                <label class="form-check-label">${rowData.hours}</label> <!-- Display hours number -->
+                            </div>
+                        </div>
+                        <div class="col">
+                            <textarea class="form-control notes" data-id="${rowData.id}">${rowData.notes}</textarea>
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         // Function to populate rows on the page

@@ -20,7 +20,7 @@
     </div>
     <script>
         // Simulated data for demonstration
-        const rowsData = [
+        let rowsData = [
             { id: 1, checked: false, notes: '' },
             // ... more data
         ];
@@ -93,13 +93,15 @@
         // Function to save data to the server
         function saveDataToServer(id, checked, notes) {
             // Simulated function to send data to server
+            const dataToSend = JSON.stringify({
+                checked: checked,
+                notes: notes
+            });
             $.ajax({
                 url: '/api/data/' + id,
                 method: 'PUT',
-                data: {
-                    checked: checked,
-                    notes: notes
-                },
+                contentType: 'application/json', // Specify JSON content type
+                data: dataToSend,
                 success: function (response) {
                     console.log(response);
                 },
@@ -117,9 +119,12 @@
                 method: 'GET',
                 success: function (serverData) {
                     // If server data is empty, use default data
-                    const dataToPopulate = serverData.length > 0 ? serverData : defaultRowsData;
-                    populateRows(dataToPopulate);
-                    autoSave();
+                    // const dataToPopulate = serverData.length > 0 ? serverData : defaultRowsData;
+                    if(serverData.length > 0 ) {
+                        rowsData = serverData;
+                        populateRows(rowsData);
+                        autoSave();
+                    }
                 },
                 error: function (error) {
                     console.error(error);
